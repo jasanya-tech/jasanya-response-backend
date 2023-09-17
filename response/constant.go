@@ -1,19 +1,4 @@
-package jasanya_response_backend
-
-import (
-	"fmt"
-)
-
-func ErrorLoginMessage(field1 string, field2 string) map[string][]string {
-	return map[string][]string{
-		field1: {
-			fmt.Sprintf("invalid %s atau %s", field1, field2),
-		},
-		field2: {
-			fmt.Sprintf("invalid %s atau %s", field2, field1),
-		},
-	}
-}
+package response
 
 func RegisterErrMapOfSlices(field string, msg string) map[string][]string {
 	return map[string][]string{
