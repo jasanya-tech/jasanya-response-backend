@@ -53,7 +53,7 @@ var CodeCompanyName = map[CodeCompany]string{
 	"09": "BAD GATEWAY",
 	"10": "SERVER DOWN",
 	"11": "UNPROCESSABLE ENTITY",
-	"12": "Invalid email OR password",
+	"12": "Too Many Requests",
 	"99": "SYSTEM ERROR",
 }
 
@@ -85,7 +85,7 @@ func getCode(s CodeCompany) int {
 	case CM11:
 		code = http.StatusUnprocessableEntity
 	case CM12:
-		code = http.StatusBadRequest
+		code = http.StatusTooManyRequests
 	case CM99:
 		code = http.StatusInternalServerError
 	default:
@@ -107,13 +107,13 @@ func Error(err HttpError) HttpResponse {
 	}
 }
 
-func Success(data any, codeCompany CodeCompany) HttpResponse {
+func Success(data any, codeCompany CodeCompany, message string) HttpResponse {
 	code := getCode(codeCompany)
 	codeCompanyInt, _ := strconv.Atoi(string(codeCompany))
 	return HttpResponse{
 		Code:    code,
 		Status:  codeCompanyInt,
-		Message: CodeCompanyName[codeCompany],
+		Message: message,
 		Errors:  nil,
 		Data:    data,
 	}
