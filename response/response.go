@@ -3,15 +3,14 @@ package response
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 )
 
 type HttpResponse struct {
-	Code    int    `json:"-"`
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-	Errors  any    `json:"errors"`
-	Data    any    `json:"data"`
+	Code    int         `json:"-"`
+	Status  CodeCompany `json:"status"`
+	Message string      `json:"message"`
+	Errors  any         `json:"errors"`
+	Data    any         `json:"data"`
 }
 
 type HttpError struct {
@@ -96,11 +95,10 @@ func getCode(s CodeCompany) int {
 }
 
 func Error(err HttpError) HttpResponse {
-	codeCompanyInt, _ := strconv.Atoi(string(err.CodeCompany))
 	code := getCode(err.CodeCompany)
 	return HttpResponse{
 		Code:    code,
-		Status:  codeCompanyInt,
+		Status:  err.CodeCompany,
 		Message: CodeCompanyName[err.CodeCompany],
 		Errors:  err.Err,
 		Data:    nil,
@@ -109,10 +107,9 @@ func Error(err HttpError) HttpResponse {
 
 func Success(data any, codeCompany CodeCompany, message string) HttpResponse {
 	code := getCode(codeCompany)
-	codeCompanyInt, _ := strconv.Atoi(string(codeCompany))
 	return HttpResponse{
 		Code:    code,
-		Status:  codeCompanyInt,
+		Status:  codeCompany,
 		Message: message,
 		Errors:  nil,
 		Data:    data,
